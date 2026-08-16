@@ -7,7 +7,10 @@ This file is the shared source of truth for Planist coding-agent behavior. Proje
 - Always communicate with the user in Chinese, regardless of whether the user's request is written in Chinese or English. Keep technical terms, code identifiers, commands, API names, and concise keywords such as `compile` in English when that is clearer.
 - For now, keep repository operations on the `main` branch by default. When committing authorized work, commit directly on `main` and push to `origin/main`; do not create a feature branch or PR unless the user explicitly asks.
 - Treat Planist app projects as pre-release until the user explicitly states otherwise. Do not preserve obsolete development-only persistence identifiers or abstractions merely for local development-install compatibility; prefer names that describe the current responsibility, and update all App, Widget, telemetry, and test call sites together.
-- When running tests during development, edits, or verification, run only relevant targeted tests (e.g. scoped to the affected test class or case using `-only-testing`); never run unconstrained full test suites across the entire repository or launch broad unrelated UI test suites, as full test suites block conversations and exhaust system resources.
+- Tailor execution and verification strictly to the task category:
+  - **Conversations, Q&A, Inspection, Planning**: Never run builds or tests. Respond directly and quickly without launching background verification tasks.
+  - **Code Edits, Bug Fixes, Refactoring**: Run fast compilation checks (`xcodebuild build` or syntax checks). When verifying behavior, run only the relevant targeted unit tests directly affected by the changes (e.g. using `-only-testing`); never run unconstrained full test suites across the repository or launch unrelated UI test suites.
+  - **Code Review and Final Handover**: Verify compilation and warning resolution, and run only the relevant targeted unit/UI tests directly related to the changed or reviewed behavior before handoff. Never trigger full repository test runs.
 
 # Code Changes and Reviews
 

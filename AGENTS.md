@@ -7,6 +7,7 @@ This file is the shared source of truth for Planist coding-agent behavior. Proje
 - Always communicate with the user in Chinese, regardless of whether the user's request is written in Chinese or English. Keep technical terms, code identifiers, commands, API names, and concise keywords such as `compile` in English when that is clearer.
 - For now, keep repository operations on the `main` branch by default. When committing authorized work, commit directly on `main` and push to `origin/main`; do not create a feature branch or PR unless the user explicitly asks.
 - Treat Planist app projects as pre-release until the user explicitly states otherwise. Do not preserve obsolete development-only persistence identifiers or abstractions merely for local development-install compatibility; prefer names that describe the current responsibility, and update all App, Widget, telemetry, and test call sites together.
+- Do not automatically run full test suites (such as unconstrained `xcodebuild test` or UI test runs) after routine code changes, refactors, or reviews. Full test suite execution and simulator launches block conversations and consume significant system resources. Routine validation must rely on fast compilation checks (`xcodebuild build` or syntax checks). Automated test execution should only be run when the user explicitly requests it, or when specifically verifying complex logic with targeted unit tests (`-only-testing`).
 
 # Code Changes and Reviews
 
@@ -67,7 +68,7 @@ Apply the complete checklist to all introduced, changed, or reviewed code, inclu
 - Every bug fix must include a regression test when the behavior can be tested deterministically.
 - Keep production code free of test-only control paths. Do not add launch arguments, branches, mutable state, APIs, dependency behavior, or production UI solely to satisfy unit tests or UI tests. Use dedicated test targets, test host apps, fixtures, mocks, fakes, dependency injection, or files clearly isolated under test-support boundaries instead; document any unavoidable exception in the final handoff.
 - Resolve all compiler, linker, build, and test warnings in every affected or reviewed target. Establish the warning baseline with a clean build when practical, and ensure the final diff introduces no warnings. Report any warning that cannot be resolved, including whether it is pre-existing or originates from a third-party dependency.
-- Build every affected or reviewed target and run the relevant unit and UI tests before completing an implementation or review. If a required validation cannot run, state the reason, the unverified scope, and the resulting risk.
+- Build every affected or reviewed target (e.g. `xcodebuild build`) to verify compilation and warning resolution before completing an implementation or review. Do not run full test suites or UI tests during routine completion unless the user explicitly requests them or automated testing is necessary and scoped to specific targeted unit tests. If a required validation cannot run, state the reason, the unverified scope, and the resulting risk.
 
 ### SHOULD
 

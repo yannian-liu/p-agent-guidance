@@ -125,6 +125,14 @@ Apply every rule under **All Files** in addition to the rules below.
 - Test asynchronous button state transitions in the ViewModel, including initial, in-progress, success, failure, cancellation, retry, and duplicate-tap behavior as applicable.
 - Require stable accessibility identifiers for critical UI-test paths without exposing implementation details unnecessarily.
 - Require exceptionally comprehensive UI tests for critical user flows and presentation behavior that are introduced, changed, or reviewed. During implementation or authorized repair, add or update UI tests to close every applicable coverage gap. During review-only tasks, do not add or update UI tests; report every missing or inadequate UI test as a finding with priority, affected behavior, evidence, expected impact, and the concrete UI-test obligations that must be covered when fixes are authorized. Cover meaningful loading, empty, error, partial-data, loaded, retry, cancellation, navigation, sheet, alert, deep-link, keyboard, accessibility, duplicate-submission, and regression scenarios as applicable. Verify both successful outcomes and user-visible recovery from failures while keeping detailed business branching in unit tests where UI coverage would be slow or brittle.
+- Ensure UI tests comprehensively cover the supported device matrix across iPhone, iPad, and Mac (Mac Catalyst / macOS), verifying both universal user flows and form-factor-specific interactions:
+  - Write unified UI test cases for cross-platform flows (such as core CRUD operations, state transitions, sheet workflows, and general navigation) that execute seamlessly on all target devices.
+  - Explicitly cover platform-specific and form-factor-specific scenarios where layouts or interaction models diverge:
+    - **iPhone**: compact single-column navigation stacks, tab bars, bottom action sheets, orientation adaptivity (portrait/landscape), and compact keyboard avoidance.
+    - **iPad**: multi-column navigation split view (`NavigationSplitView`) hierarchy, sidebar toggle/expansion/collapse, permanent sidebar visibility on large displays, popovers vs sheets, drag-and-drop interactions, and multitasking window resizing.
+    - **Mac (Mac Catalyst / macOS)**: window resizing dynamics, pointer and hover behaviors, desktop menu bar commands, standard keyboard shortcuts (such as `Cmd+F`, `Cmd+N`, `Cmd+W`), sidebar persistence, and keyboard-first navigation without touch assumptions.
+  - When writing UI tests for device-exclusive or platform-exclusive capabilities (such as iPad sidebar hierarchy, drag-and-drop, or Mac menu/keyboard shortcuts), use explicit XCTest condition guards (such as `try XCTSkipUnless(UIDevice.current.userInterfaceIdiom == .pad || UIDevice.current.userInterfaceIdiom == .mac, ...)` or `#if targetEnvironment(macCatalyst)`) to cleanly skip non-applicable form factors rather than failing or omitting the test suite.
+
 
 ### SHOULD
 

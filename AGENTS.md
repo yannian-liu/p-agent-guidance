@@ -115,6 +115,7 @@ Apply every rule under **All Files** in addition to the rules below.
 - Provide iPhone previews using the default color scheme. Cover every meaningful state and special content combination whenever applicable, including loading, empty, error, loaded, long content, relevant interaction states, and variants with and without elements such as banners. Prefer comprehensive behavioral and content coverage over duplicating device sizes or appearance modes.
 - Verify that the feature is functional in loading, empty, error, partial-data, loaded, retry, and cancelled states whenever those states can occur.
 - Make empty states actionable when a meaningful next step exists, and make recoverable error states clearly explain what the user can do next.
+- Verify that every introduced, changed, or reviewed feature provides appropriate, intuitive, and discoverable entry points across all supported device form factors—including iPhone, iPad, and Mac (Mac Catalyst / macOS)—and delivers an excellent, platform-idiomatic user experience tailored to each device class.
 - Verify layouts in both orientations on iPhone and iPad. Check clipping, truncation, scrolling, overlays, sheets, keyboard interaction, and safe areas rather than only confirming that the view does not crash.
 - Handle macOS or Mac Catalyst layout and interaction differences where relevant, including resizable windows, pointer interaction, keyboard navigation, menus, and the absence of touch input.
 - Support Dark Mode with correct contrast and without relying on hard-coded appearance assumptions.

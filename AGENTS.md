@@ -109,9 +109,10 @@ Apply every rule under **All Files** in addition to the rules below.
 ### MUST
 
 - Build views from `PPComponents` components whenever a suitable component exists. If no suitable component exists, report the gap to the user before introducing a one-off replacement or expanding the component library.
+- When using a `PPComponents` component, configure it through that component's corresponding `Configuration` type instead of ad hoc parameter bundles or unrelated configuration models.
 - Use `PPTokens` for view colors. Do not introduce ad hoc hex values, literal colors, or system semantic colors for application chrome. Dynamic content colors such as user-selected habit colors are allowed. If no suitable token exists, report the missing role to the user.
 - Keep the View responsible for rendering state and emitting user intent. Do not perform repository access, networking, persistence, or complex business workflows directly in a View.
-- Put testable component configuration and presentation specifications in the ViewModel. Keep purely visual implementation details that are not configuration or presentation specifications in the View or reusable component layer.
+- Put testable component configuration and presentation specifications in the ViewModel or in a dedicated `ViewConfiguration` owned by the feature. Keep purely visual implementation details that are not configuration or presentation specifications in the View or reusable component layer.
 - Provide iPhone previews using the default color scheme. Cover every meaningful state and special content combination whenever applicable, including loading, empty, error, loaded, long content, relevant interaction states, and variants with and without elements such as banners. Prefer comprehensive behavioral and content coverage over duplicating device sizes or appearance modes.
 - Verify that the feature is functional in loading, empty, error, partial-data, loaded, retry, and cancelled states whenever those states can occur.
 - Make empty states actionable when a meaningful next step exists, and make recoverable error states clearly explain what the user can do next.

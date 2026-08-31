@@ -45,7 +45,7 @@ Apply the complete checklist to all introduced, changed, or reviewed code, inclu
 - Use the narrowest correct access level. Make declarations `private` or `fileprivate` when broader visibility is unnecessary, and do not add new public or internal API without a concrete caller.
 - Organize and group declarations by responsibility and follow the surrounding repository conventions. Avoid large formatting-only diffs that obscure functional changes.
 - Localize every user-visible string, including errors, alerts, accessibility text, notifications, widgets, menus, and empty states. Handle interpolation, plurals, dates, times, numbers, and text expansion correctly.
-- Use English for all localization keys, such as English natural text or English dot-separated identifiers. Do not use localized or non-English text as the key.
+- Use English for all localization keys and default values, such as English natural text or English dot-separated identifiers. Do not use localized or non-English text as the key or default value.
 - Do not silently swallow errors. Unexpected errors must be recorded through the project's telemetry path whenever technically possible. Expected outcomes such as explicit cancellation may be handled without error reporting when appropriate.
 - Never include passwords, authentication tokens, private user content, or unnecessary personally identifiable information in telemetry.
 - Ensure every asynchronous flow reaches an explicit success, empty, error, or cancelled state. Never leave the user waiting indefinitely. Recoverable failures must present an understandable message and an appropriate retry or recovery action.

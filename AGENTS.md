@@ -125,7 +125,27 @@ Apply every rule under **All Files** in addition to the rules below.
 - Use `PPTokens` for view colors. Do not introduce ad hoc hex values, literal colors, or system semantic colors for application chrome. Dynamic content colors such as user-selected habit colors are allowed. If no suitable token exists, report the missing role to the user.
 - Keep the View responsible for rendering state and emitting user intent. Do not perform repository access, networking, persistence, or complex business workflows directly in a View.
 - Put testable component configuration and presentation specifications in the ViewModel or in a dedicated feature-owned presentation `Configuration` / `ViewConfiguration`. A feature configuration such as a row configuration must own the `PPComponents` configurations used by that slice, including labels, icons, formatting, visibility/enabled-state decisions, and nested component configuration values. Keep purely visual implementation details that are not configuration or presentation specifications in the View or reusable component layer.
+  - **Direct Configuration Binding Pattern**: The View body must consume component configurations directly via concise properties (e.g. `PPButton(configuration: viewModel.buttonConfiguration)` or `PPButton(configuration: configuration.submitButtonConfiguration)`), rather than constructing configurations ad-hoc in View subviews or calling multi-argument helper methods in View builders.
 - For interactive component configurations, the ViewModel or feature-owned presentation configuration must provide a complete, testable configuration that includes the action closure or intent handler. Views must not pass action closures into `PPComponents` configuration builders or mutate View-local presentation state from those closures. Put actions behind a ViewModel method or configuration-owned closure, and keep sheet, alert, popover, confirmation dialog, navigation destination, selection, and `isPresented` state in the ViewModel or feature-owned presentation/configuration state so tests can invoke the configuration action and assert observable state.
+  - **Canonical Example**:
+    ```swift
+    // In ViewModel / ViewConfiguration:
+    var submitButtonConfiguration: PPButtonConfiguration {
+        PPButtonConfiguration(
+            icon: .add,
+            hierarchy: .filled,
+            size: .medium,
+            shape: .circle,
+            isDisabled: isSubmitDisabled,
+            isLoading: isSubmitting,
+            action: { [weak self] in self?.submitTask() }
+        )
+    }
+
+    // In View body:
+    PPButton(configuration: viewModel.submitButtonConfiguration)
+    ```
+  - **Anti-Pattern to Avoid**: Do NOT write `PPButton(configuration: configuration.submitButtonConfiguration(title: text, isSubmitting: isSubmitting, action: { save() }))` inside the View body, which defeats the testability and declarative purity of the configuration-driven architecture.
 - Provide iPhone previews using the default color scheme. Cover every meaningful state and special content combination whenever applicable, including loading, empty, error, loaded, long content, relevant interaction states, and variants with and without elements such as banners. Prefer comprehensive behavioral and content coverage over duplicating device sizes or appearance modes.
 - Verify that the feature is functional in loading, empty, error, partial-data, loaded, retry, and cancelled states whenever those states can occur.
 - Make empty states actionable when a meaningful next step exists, and make recoverable error states clearly explain what the user can do next.

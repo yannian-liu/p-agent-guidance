@@ -131,7 +131,7 @@ Apply every rule under **All Files** in addition to the rules below.
     ```swift
     // In ViewModel / ViewConfiguration:
     var submitButtonConfiguration: PPButtonConfiguration {
-        PPButtonConfiguration(
+        .init(
             icon: .add,
             hierarchy: .filled,
             size: .medium,
